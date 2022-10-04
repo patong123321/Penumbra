@@ -33,6 +33,14 @@ namespace Penumbra
         float timePerFrame2;
         int framePerSec2;
 
+        Texture2D locker;
+        Vector2 lockerPos = new Vector2(580, 406);
+        Texture2D locker2;
+        Vector2 lockerPos2 = new Vector2(2147, 406);
+
+        Texture2D buttonE;
+        Vector2 buttonEPos = new Vector2(580, 270);
+
         Texture2D senses;
         Vector2 sensesPos = new Vector2(5, -5);
 
@@ -71,6 +79,11 @@ namespace Penumbra
             player = Content.Load<Texture2D>("player");
 
             enemy = Content.Load<Texture2D>("enemy_1");
+
+            locker = Content.Load<Texture2D>("locker");
+            locker2 = Content.Load<Texture2D>("locker");
+
+            buttonE = Content.Load<Texture2D>("button");
 
             senses = Content.Load<Texture2D>("senses");
 
@@ -145,13 +158,20 @@ namespace Penumbra
             {
                 spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 390, 260, 390), Color.White);
             }
-            spriteBatch.Draw(player, playerPos - cameraPos, new Rectangle(130 * frames, 260 * direction, 130, 260), Color.White);
+            
+            spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
+            spriteBatch.Draw(locker, new Vector2(2147, 406) - cameraPos, Color.White);
+
+            spriteBatch.Draw(buttonE, buttonEPos - cameraPos, Color.White);
+            spriteBatch.Draw(buttonE, new Vector2(2147, 270) - cameraPos, Color.White);
 
             spriteBatch.Draw(senses, sensesPos, Color.White);
 
             spriteBatch.Draw(inventory, inventoyPos, Color.White);
             spriteBatch.Draw(inventory, new Vector2(135, 670), Color.White);
             spriteBatch.Draw(inventory, new Vector2(265, 670), Color.White);
+
+            spriteBatch.Draw(player, playerPos - cameraPos, new Rectangle(130 * frames, 260 * direction, 130, 260), Color.White);
 
 
             spriteBatch.End();
