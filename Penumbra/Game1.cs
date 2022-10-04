@@ -6,31 +6,43 @@ namespace Penumbra
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
         Texture2D bg;
         Vector2 bgPos = new Vector2(0, 0);
+        Texture2D bg2;
+        Vector2 bgPos2 = new Vector2(0, 0);
+
+        Vector2 scroll_factor = new Vector2(1.0f, 1);
+
+        Vector2 cameraPos = Vector2.Zero;
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            graphics.PreferredBackBufferWidth = 1600;
+            graphics.PreferredBackBufferHeight = 800;
+            graphics.ApplyChanges();
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+
+            bg = Content.Load<Texture2D>("background_1");
+            bg2 = Content.Load<Texture2D>("background_2");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -38,7 +50,6 @@ namespace Penumbra
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
@@ -47,7 +58,10 @@ namespace Penumbra
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(bg, (bgPos - cameraPos) * scroll_factor, Color.White);
+            spriteBatch.Draw(bg2, (bgPos2 - cameraPos) * scroll_factor + new Vector2(graphics.GraphicsDevice.Viewport.Width, 0), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
