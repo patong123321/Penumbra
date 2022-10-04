@@ -36,6 +36,9 @@ namespace Penumbra
         Texture2D senses;
         Vector2 sensesPos = new Vector2(5, -5);
 
+        Texture2D inventory;
+        Vector2 inventoyPos = new Vector2(5, 670);
+
         Vector2 scroll_factor = new Vector2(1.0f, 1);
 
         Vector2 cameraPos = Vector2.Zero;
@@ -70,6 +73,8 @@ namespace Penumbra
             enemy = Content.Load<Texture2D>("enemy_1");
 
             senses = Content.Load<Texture2D>("senses");
+
+            inventory = Content.Load<Texture2D>("inventory");
 
             frames = 0;
             totalFrames = 8;
@@ -143,6 +148,10 @@ namespace Penumbra
             spriteBatch.Draw(player, playerPos - cameraPos, new Rectangle(130 * frames, 260 * direction, 130, 260), Color.White);
 
             spriteBatch.Draw(senses, sensesPos, Color.White);
+
+            spriteBatch.Draw(inventory, inventoyPos, Color.White);
+            spriteBatch.Draw(inventory, new Vector2(135, 670), Color.White);
+            spriteBatch.Draw(inventory, new Vector2(265, 670), Color.White);
 
 
             spriteBatch.End();
