@@ -51,6 +51,17 @@ namespace Penumbra
 
         Vector2 cameraPos = Vector2.Zero;
 
+        bool personHit = false;
+        bool personHit2 = false;
+        bool personHit3 = false;
+
+        bool hide;
+
+        bool walk = true;
+
+        KeyboardState ks;
+        KeyboardState oldks;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -108,35 +119,106 @@ namespace Penumbra
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             KeyboardState keyboard = Keyboard.GetState();
-            if (Keyboard.GetState().IsKeyDown(Keys.D) && playerPos.X < graphics.GraphicsDevice.Viewport.Width * 2 - 130)
+            if (walk == true)
             {
-                if (playerPos.X - cameraPos.X >= 400 && cameraPos.X < graphics.GraphicsDevice.Viewport.Width)
+                if (Keyboard.GetState().IsKeyDown(Keys.D) && playerPos.X < graphics.GraphicsDevice.Viewport.Width * 2 - 130)
                 {
-                    cameraPos += new Vector2(5, 0);
-                }
-                UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
+                    if (playerPos.X - cameraPos.X >= 400 && cameraPos.X < graphics.GraphicsDevice.Viewport.Width)
+                    {
+                        cameraPos += new Vector2(5, 0);
+                    }
+                    UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-                direction = 0;
-                playerPos += new Vector2(5, 0);
+                    direction = 0;
+                    playerPos += new Vector2(5, 0);
+
+                }
+
+                else if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
+                {
+                    if (playerPos.X - cameraPos.X <= 300 && cameraPos.X > 0)
+                    {
+                        cameraPos -= new Vector2(5, 0);
+                    }
+                    UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
+                    //player.Play();
+                    direction = 1;
+                    playerPos -= new Vector2(5, 0);
+                    //flip = true;
+                }
+            }
+            else if (walk == false)
+            {
 
             }
 
-            else if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
-            {
-                if (playerPos.X - cameraPos.X <= 300 && cameraPos.X > 0)
-                {
-                    cameraPos -= new Vector2(5, 0);
-                }
-                UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
-                direction = 1;
-                playerPos -= new Vector2(5, 0);
-            }
 
             UpdateFrame2((float)gameTime.ElapsedGameTime.TotalSeconds);
             enemyPos.X = enemyPos.X + (3 * direction2);
             if (enemyPos.X < 150 || enemyPos.X + (enemyPos.X) > 3200)
             {
                 direction2 *= -1;
+            }
+
+            Rectangle personRectangle = new Rectangle((int)playerPos.X, (int)playerPos.X, 130, 260);
+            personHit = false;
+
+            Rectangle enemyRectangle = new Rectangle((int)enemyPos.X, (int)enemyPos.X, 155, 300);
+            if (personRectangle.Intersects(enemyRectangle) == true)
+            {
+                personHit = true;
+            }
+
+            personHit2 = false;
+            personHit3 = false;
+            Rectangle lockerRectangle = new Rectangle((int)lockerPos.X, (int)lockerPos.X, 130, 260);
+            Rectangle lockerRectangle2 = new Rectangle((int)lockerPos2.X, (int)lockerPos2.X, 130, 260);
+
+            ks = Keyboard.GetState();
+            if (personRectangle.Intersects(lockerRectangle) == true)
+            {
+                personHit2 = true;
+                if (ks.IsKeyDown(Keys.E) && oldks.IsKeyUp(Keys.E))
+                {
+                    hide = true;
+                    walk = false;
+                    
+                }
+                else if (ks.IsKeyDown(Keys.Q) && oldks.IsKeyUp(Keys.Q))
+                {
+                    hide = false;
+                    walk = true;
+
+                }
+                oldks = ks;
+
+            }
+
+            if (walk == false)
+            {
+                personHit = false;
+            }
+
+            if (personRectangle.Intersects(lockerRectangle2) == true)
+            {
+                personHit3 = true;
+                if (ks.IsKeyDown(Keys.E) && oldks.IsKeyUp(Keys.E))
+                {
+                    hide = true;
+                    walk = false;
+
+                }
+                else if (ks.IsKeyDown(Keys.Q) && oldks.IsKeyDown(Keys.Q))
+                {
+                    hide = false;
+                    walk = true;
+                }
+                oldks = ks;
+            }
+
+            if (personHit2 == true)
+            {
+
             }
 
             base.Update(gameTime);
@@ -147,8 +229,48 @@ namespace Penumbra
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(bg, (bgPos - cameraPos) * scroll_factor, Color.White);
-            spriteBatch.Draw(bg2, (bgPos2 - cameraPos) * scroll_factor + new Vector2(graphics.GraphicsDevice.Viewport.Width, 0), Color.White);
+            if (personHit == true)
+            {
+                spriteBatch.Draw(bg, (bgPos - cameraPos) * scroll_factor, Color.Red);
+                spriteBatch.Draw(bg2, (bgPos2 - cameraPos) * scroll_factor + new Vector2(graphics.GraphicsDevice.Viewport.Width, 0), Color.Red);
+            }
+            else if (personHit == false)
+            {
+                spriteBatch.Draw(bg, (bgPos - cameraPos) * scroll_factor, Color.White);
+                spriteBatch.Draw(bg2, (bgPos2 - cameraPos) * scroll_factor + new Vector2(graphics.GraphicsDevice.Viewport.Width, 0), Color.White);
+            }
+
+            if (personHit2 == true)
+            {
+
+                spriteBatch.Draw(buttonE, buttonEPos - cameraPos, Color.White);
+
+            }
+            else if (personHit2 == false)
+            {
+
+            }
+
+
+            if (personHit3 == true)
+            {
+
+                spriteBatch.Draw(buttonE, new Vector2(2147, 270) - cameraPos, Color.White);
+
+            }
+            else if (personHit3 == false)
+            {
+
+            }
+
+            spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
+            spriteBatch.Draw(locker, new Vector2(2147, 406) - cameraPos, Color.White);
+
+            spriteBatch.Draw(senses, sensesPos, Color.White);
+
+            spriteBatch.Draw(inventory, inventoyPos, Color.White);
+            spriteBatch.Draw(inventory, new Vector2(135, 670), Color.White);
+            spriteBatch.Draw(inventory, new Vector2(265, 670), Color.White);
 
             if (direction2 == -1)
             {
@@ -158,20 +280,15 @@ namespace Penumbra
             {
                 spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 390, 260, 390), Color.White);
             }
-            
-            spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
-            spriteBatch.Draw(locker, new Vector2(2147, 406) - cameraPos, Color.White);
 
-            spriteBatch.Draw(buttonE, buttonEPos - cameraPos, Color.White);
-            spriteBatch.Draw(buttonE, new Vector2(2147, 270) - cameraPos, Color.White);
+            if (hide == true)
+            {
 
-            spriteBatch.Draw(senses, sensesPos, Color.White);
-
-            spriteBatch.Draw(inventory, inventoyPos, Color.White);
-            spriteBatch.Draw(inventory, new Vector2(135, 670), Color.White);
-            spriteBatch.Draw(inventory, new Vector2(265, 670), Color.White);
-
-            spriteBatch.Draw(player, playerPos - cameraPos, new Rectangle(130 * frames, 260 * direction, 130, 260), Color.White);
+            }
+            else if (hide == false)
+            {
+                spriteBatch.Draw(player, playerPos - cameraPos, new Rectangle(130 * frames, 260 * direction, 130, 260), Color.White);
+            }
 
 
             spriteBatch.End();
