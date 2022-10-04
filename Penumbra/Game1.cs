@@ -17,12 +17,21 @@ namespace Penumbra
         Texture2D player;
         Vector2 playerPos = new Vector2(0, 406);
 
+        Texture2D enemy;
+        Vector2 enemyPos = new Vector2(1600, 275);
+
         int direction = 0;
         int frames;
         int totalFrames;
         int framePersec;
         float timePerFrames;
         float totalElapesd;
+
+        int direction2 = 1;
+        int frame2;
+        float totalElapsed2;
+        float timePerFrame2;
+        int framePerSec2;
 
         Vector2 scroll_factor = new Vector2(1.0f, 1);
 
@@ -55,12 +64,19 @@ namespace Penumbra
 
             player = Content.Load<Texture2D>("player");
 
+            enemy = Content.Load<Texture2D>("enemy_1");
+
             frames = 0;
             totalFrames = 8;
             framePersec = 3;
             timePerFrames = (float)1 / framePersec;
             totalElapesd = 0;
 
+
+            framePerSec2 = 3;
+            timePerFrame2 = (float)1 / framePerSec2;
+            frame2 = 0;
+            totalElapsed2 = 0;
 
         }
 
@@ -93,6 +109,12 @@ namespace Penumbra
                 playerPos -= new Vector2(5, 0);
             }
 
+            UpdateFrame2((float)gameTime.ElapsedGameTime.TotalSeconds);
+            enemyPos.X = enemyPos.X + (3 * direction2);
+            if (enemyPos.X < 150 || enemyPos.X + (enemyPos.X) > 3200)
+            {
+                direction2 *= -1;
+            }
 
             base.Update(gameTime);
         }
@@ -104,7 +126,18 @@ namespace Penumbra
             spriteBatch.Begin();
             spriteBatch.Draw(bg, (bgPos - cameraPos) * scroll_factor, Color.White);
             spriteBatch.Draw(bg2, (bgPos2 - cameraPos) * scroll_factor + new Vector2(graphics.GraphicsDevice.Viewport.Width, 0), Color.White);
+
+            if (direction2 == -1)
+            {
+                spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 0, 260, 390), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 390, 260, 390), Color.White);
+            }
             spriteBatch.Draw(player, playerPos - cameraPos, new Rectangle(130 * frames, 260 * direction, 130, 260), Color.White);
+
+
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -116,6 +149,16 @@ namespace Penumbra
             {
                 frames = (frames + 1) % totalFrames;
                 totalElapesd -= timePerFrames;
+            }
+        }
+
+        void UpdateFrame2(float elapsed2)
+        {
+            totalElapsed2 += elapsed2;
+            if (totalElapsed2 > timePerFrame2)
+            {
+                frame2 = (frame2 + 1) % 5;
+                totalElapsed2 -= timePerFrame2;
             }
         }
     }
