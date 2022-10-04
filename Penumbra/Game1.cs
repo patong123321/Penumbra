@@ -43,6 +43,7 @@ namespace Penumbra
             bg = Content.Load<Texture2D>("background_1");
             bg2 = Content.Load<Texture2D>("background_2");
 
+
         }
 
         protected override void Update(GameTime gameTime)
