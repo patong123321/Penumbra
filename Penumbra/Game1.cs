@@ -9,6 +9,9 @@ namespace Penumbra
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        Texture2D bg;
+        Vector2 bgPos = new Vector2(0, 0);
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
