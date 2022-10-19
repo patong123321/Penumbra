@@ -227,6 +227,7 @@ namespace Penumbra
 
             }
 
+
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
