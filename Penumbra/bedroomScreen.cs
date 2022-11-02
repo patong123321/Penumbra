@@ -42,7 +42,7 @@ namespace Penumbra
         Game1 game;
         public bedroomScreen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
-            bedroom_bg = game.Content.Load<Texture2D>("bedroom");
+            bedroom_bg = game.Content.Load<Texture2D>("Bedroom");
             door = game.Content.Load<Texture2D>("door");
             button = game.Content.Load<Texture2D>("button");
 
@@ -103,6 +103,7 @@ namespace Penumbra
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            game.GraphicsDevice.Clear(Color.Black);
             spriteBatch.Draw(bedroom_bg, bedroom_bgPos, Color.White);
             spriteBatch.Draw(door, door_Pos, Color.White);
             

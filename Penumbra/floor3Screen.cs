@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 
 namespace Penumbra
@@ -59,9 +61,24 @@ namespace Penumbra
         Texture2D lift;
         Vector2 lift_Pos = new Vector2(2840,276);
 
+        //door
+        Texture2D Door;
+        Vector2 DoorPos = new Vector2(300,340);
+
         //camera
         Vector2 scroll_factor = new Vector2(1.0f, 1);
         Vector2 cameraPos = Vector2.Zero;
+
+        //barsense
+        Texture2D barTexture;
+        int currentHeart ;
+
+        //song
+        Song song;
+        bool isPlaySong = false;
+
+        Song heart;
+        bool isPlayHeart = false;
 
         bool personHit = false;
         bool personHit2 = false;
@@ -69,7 +86,7 @@ namespace Penumbra
 
         bool liftHit = false;
 
-        bool hide;
+        bool hide = false;
 
         bool walk = true;
 
@@ -80,8 +97,8 @@ namespace Penumbra
         Game1 game;
         public floor3Screen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
-            floor3_bg = game.Content.Load<Texture2D>("background_1");
-            floor3_bg2 = game.Content.Load<Texture2D>("background_2");
+            floor3_bg = game.Content.Load<Texture2D>("floor3_bg_1");
+            floor3_bg2 = game.Content.Load<Texture2D>("floor3_bg_2");
 
             player = game.Content.Load<Texture2D>("player");
 
@@ -98,6 +115,11 @@ namespace Penumbra
 
             lift = game.Content.Load<Texture2D>("lift");
 
+            Door = game.Content.Load<Texture2D>("Door");
+
+            barTexture = game.Content.Load<Texture2D>("HealthBar_thumb");
+            currentHeart = barTexture.Width - 5;
+
             frame = 0;
             totalFrame = 8;
             framePersec = 3;
@@ -109,6 +131,13 @@ namespace Penumbra
             timePerFrame2 = (float)1 / framePerSec2;
             frame2 = 0;
             totalElapsed2 = 0;
+
+            this.song = game.Content.Load<Song>("floor3sound");
+            this.song = game.Content.Load<Song>("heartbeat");
+            //MediaPlayer.Play(song);
+           // MediaPlayer.IsRepeating = true;
+            MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
+
             this.game = game;
         }
         public override void Update(GameTime gameTime)
@@ -159,7 +188,7 @@ namespace Penumbra
 
             UpdateFrame2((float)gameTime.ElapsedGameTime.TotalSeconds);
             enemyPos.X = enemyPos.X + (3 * direction2);
-            if (enemyPos.X < 150 || enemyPos.X + (enemyPos.X) > 3200)
+            if (enemyPos.X < 150 || enemyPos.X + (enemyPos.X) > 4800)
             {
                 direction2 *= -1;
             }
@@ -180,7 +209,7 @@ namespace Penumbra
 
             liftHit = false;
             Rectangle liftRectangle = new Rectangle((int)lift_Pos.X, (int)lift_Pos.X, 390, 390);
-
+            //lockerHit
             ks = Keyboard.GetState();
             if (personRectangle.Intersects(lockerRectangle) == true)
             {
@@ -191,11 +220,10 @@ namespace Penumbra
                     walk = false;
 
                 }
-                else if (ks.IsKeyDown(Keys.Q) && oldks.IsKeyUp(Keys.Q))
+                else if (ks.IsKeyDown(Keys.Q) && oldks.IsKeyDown(Keys.Q))
                 {
                     hide = false;
                     walk = true;
-
                 }
                 oldks = ks;
 
@@ -205,7 +233,7 @@ namespace Penumbra
             {
                 personHit = false;
             }
-
+            //lockerHit2
             if (personRectangle.Intersects(lockerRectangle2) == true)
             {
                 personHit3 = true;
@@ -223,16 +251,12 @@ namespace Penumbra
                 oldks = ks;
             }
 
-            if (personHit2 == true)
-            {
 
-            }
-
+            //lift
             if (personRectangle.Intersects(liftRectangle) == true)
             {
                 liftHit = true;
             }
-
             if(liftHit == true)
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.E) == true)
@@ -240,6 +264,21 @@ namespace Penumbra
                     ScreenEvent.Invoke(game.mfloor2Screen, new EventArgs());
                     return;
                 }
+            }
+
+            //sensebar
+            if(personHit == true)
+            {
+                if (currentHeart > 0)
+                {
+                    currentHeart = currentHeart - 5%barTexture.Width;
+
+                }
+                
+            }
+            if (currentHeart <= 0)
+            {
+                ScreenEvent.Invoke(game.mGameOverScreen, new EventArgs());
             }
 
 
@@ -288,6 +327,8 @@ namespace Penumbra
             spriteBatch.Draw(inventory, new Vector2(135, 670), Color.White);
             spriteBatch.Draw(inventory, new Vector2(265, 670), Color.White);
 
+            spriteBatch.Draw(Door, DoorPos - cameraPos, Color.White);
+
             if (direction2 == -1)
             {
                 spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 0, 260, 390), Color.White);
@@ -305,6 +346,9 @@ namespace Penumbra
             {
                 spriteBatch.Draw(player, playerPos - cameraPos, new Rectangle(130 * frame, 260 * direction, 130, 260), Color.White);
             }
+
+            spriteBatch.Draw(barTexture, new Rectangle(game.GraphicsDevice.Viewport.Width / 2 - barTexture.Width / 2, 30, barTexture.Width, 44), new Rectangle(0, 0, barTexture.Width - 4, 59), Color.White); 
+            spriteBatch.Draw(barTexture, new Rectangle(game.GraphicsDevice.Viewport.Width / 2 - barTexture.Width / 2, 30, currentHeart, 42), new Rectangle(0, 58, barTexture.Width - 10, 60), Color.Red);
             base.Draw(spriteBatch);
         }
 
@@ -325,6 +369,12 @@ namespace Penumbra
                 frame2 = (frame2 + 1) % 5;
                 totalElapsed2 -= timePerFrame2;
             }
+        }
+        void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
+        {
+            //0.0f is silent, 1.0f is full volume
+            MediaPlayer.Volume -= 0.1f;
+            MediaPlayer.Play(song);
         }
     }
 }

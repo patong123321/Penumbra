@@ -21,6 +21,9 @@ namespace Penumbra
         public floor1Screen mfloor1Screen;
 
         public MenuScreen mMenuScreen;
+
+        public GameOverScreen mGameOverScreen;
+
         public screen mCurrentScreen;
 
         public Game1()
@@ -46,6 +49,7 @@ namespace Penumbra
             mfloor1Screen = new floor1Screen(this, new EventHandler(GameplayScreenEvent));
             mbedroomScreen = new bedroomScreen(this, new EventHandler(GameplayScreenEvent));
             mMenuScreen = new MenuScreen(this, new EventHandler(GameplayScreenEvent));
+            mGameOverScreen = new GameOverScreen(this, new EventHandler(GameplayScreenEvent));
             mCurrentScreen = mMenuScreen;
         }
 

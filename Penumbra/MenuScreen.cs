@@ -10,12 +10,12 @@ namespace Penumbra
     public class MenuScreen : screen
     {
         Texture2D menuTexture;
-        Vector2 menuPos;
+        Vector2 menuPos = new Vector2(250,0);
         Game1 game;
         public MenuScreen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
 
-            menuTexture = game.Content.Load<Texture2D>("title (1)");
+            menuTexture = game.Content.Load<Texture2D>("menu");
             this.game = game;
         }
         public override void Update(GameTime gameTime)
@@ -35,7 +35,8 @@ namespace Penumbra
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(menuTexture, menuPos = new Vector2(400,100), Color.White);
+            game.GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Draw(menuTexture, menuPos, Color.White);
             base.Draw(spriteBatch);
         }
     }
