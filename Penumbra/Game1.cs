@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Penumbra;
 
 namespace Penumbra
 {
@@ -26,6 +27,20 @@ namespace Penumbra
 
         public screen mCurrentScreen;
 
+        PenumbraComponent penumbra;
+        Light light = new PointLight
+        {
+            Scale = new Vector2(1000f),
+            ShadowType = ShadowType.Solid
+        };
+
+        Hull hull = new Hull(new Vector2(1.0f), new Vector2(-1.0f, 1.0f), new Vector2(-1.0f), new Vector2(-1.0f, 1.0f))
+        {
+            Position = new Vector2(400f, 240f),
+            Scale = new Vector2(50f)
+        };
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -34,10 +49,17 @@ namespace Penumbra
             graphics.PreferredBackBufferWidth = 1600;
             graphics.PreferredBackBufferHeight = 800;
             graphics.ApplyChanges();
+
+            penumbra = new PenumbraComponent(this);
+            penumbra.Lights.Add(light);
+            penumbra.Hulls.Add(hull);
+
+
         }
 
         protected override void Initialize()
         {
+            penumbra.Initialize();
             base.Initialize();
         }
 
@@ -59,18 +81,21 @@ namespace Penumbra
                 Exit();
             mCurrentScreen.Update(gameTime);
 
+            light.Position = new Vector2(200, 250);
+            hull.Rotation = MathHelper.WrapAngle(-(float)gameTime.TotalGameTime.TotalSeconds);
+
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            penumbra.BeginDraw();
+            GraphicsDevice.Clear(Color.Red);
             spriteBatch.Begin();
             mCurrentScreen.Draw(spriteBatch);
             spriteBatch.End();
-
-
+            penumbra.Draw(gameTime);
 
             base.Draw(gameTime);
         }

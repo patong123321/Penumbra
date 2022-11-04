@@ -6,12 +6,26 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Penumbra;
 
 
 namespace Penumbra
 {
     public class floor3Screen : screen
     {
+        PenumbraComponent penumbra;
+        Light light = new PointLight
+        {
+            Scale = new Vector2(1000f),
+            ShadowType = ShadowType.Solid
+        };
+
+        Hull hull = new Hull(new Vector2(1.0f), new Vector2(-1.0f, 1.0f), new Vector2(-1.0f), new Vector2(-1.0f, 1.0f))
+        {
+            Position = new Vector2(400f, 240f),
+            Scale = new Vector2(50f)
+        };
+
         //bg
         Texture2D floor3_bg;
         Vector2 floor3_bgPos = new Vector2(0, 0);
@@ -95,12 +109,15 @@ namespace Penumbra
 
 
         Game1 game;
+        private GameTime gameTime;
+
         public floor3Screen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
+
             floor3_bg = game.Content.Load<Texture2D>("floor3_bg_1");
             floor3_bg2 = game.Content.Load<Texture2D>("floor3_bg_2");
 
-            player = game.Content.Load<Texture2D>("player");
+            player = game.Content.Load<Texture2D>("player_walk");
 
             enemy = game.Content.Load<Texture2D>("enemy_1");
 
@@ -133,13 +150,14 @@ namespace Penumbra
             totalElapsed2 = 0;
 
             this.song = game.Content.Load<Song>("floor3sound");
-            this.song = game.Content.Load<Song>("heartbeat");
-            //MediaPlayer.Play(song);
-           // MediaPlayer.IsRepeating = true;
+            //this.song = game.Content.Load<Song>("heartbeat");
+            MediaPlayer.Play(song);
+            MediaPlayer.IsRepeating = true;
             MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
 
             this.game = game;
         }
+
         public override void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.M) == true)
@@ -218,7 +236,6 @@ namespace Penumbra
                 {
                     hide = true;
                     walk = false;
-
                 }
                 else if (ks.IsKeyDown(Keys.Q) && oldks.IsKeyDown(Keys.Q))
                 {
@@ -284,8 +301,11 @@ namespace Penumbra
 
             base.Update(gameTime);
         }
+
+
         public override void Draw(SpriteBatch spriteBatch)
         {
+
             if (personHit == true)
             {
                 spriteBatch.Draw(floor3_bg, (floor3_bgPos - cameraPos) * scroll_factor, Color.Red);
@@ -348,8 +368,9 @@ namespace Penumbra
             }
 
             spriteBatch.Draw(barTexture, new Rectangle(game.GraphicsDevice.Viewport.Width / 2 - barTexture.Width / 2, 30, barTexture.Width, 44), new Rectangle(0, 0, barTexture.Width - 4, 59), Color.White); 
-            spriteBatch.Draw(barTexture, new Rectangle(game.GraphicsDevice.Viewport.Width / 2 - barTexture.Width / 2, 30, currentHeart, 42), new Rectangle(0, 58, barTexture.Width - 10, 60), Color.Red);
+            spriteBatch.Draw(barTexture, new Rectangle(game.GraphicsDevice.Viewport.Width / 2 - barTexture.Width / 2, 30, currentHeart, 42), new Rectangle(0, 58, barTexture.Width - 10, 60), Color.Green);
             base.Draw(spriteBatch);
+
         }
 
         void UpdateFrame(float elapsed)

@@ -46,7 +46,7 @@ namespace Penumbra
             door = game.Content.Load<Texture2D>("door");
             button = game.Content.Load<Texture2D>("button");
 
-            player = game.Content.Load<Texture2D>("player");
+            player = game.Content.Load<Texture2D>("player_walk");
 
             frame = 0;
             totalFrame = 8;

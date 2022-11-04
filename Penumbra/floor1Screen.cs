@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Penumbra;
 
 namespace Penumbra
 {
@@ -62,6 +63,8 @@ namespace Penumbra
         Vector2 scroll_factor = new Vector2(1.0f, 1);
         Vector2 cameraPos = Vector2.Zero;
 
+        
+
         bool personHit = false;
         bool personHit2 = false;
         bool personHit3 = false;
@@ -82,7 +85,7 @@ namespace Penumbra
             floor3_bg = game.Content.Load<Texture2D>("background_1");
             floor3_bg2 = game.Content.Load<Texture2D>("background_2");
 
-            player = game.Content.Load<Texture2D>("player");
+            player = game.Content.Load<Texture2D>("player_walk");
 
             enemy = game.Content.Load<Texture2D>("enemy_1");
 

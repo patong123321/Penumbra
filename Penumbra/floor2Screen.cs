@@ -37,13 +37,11 @@ namespace Penumbra
 
         //locker
         Texture2D locker;
-        Vector2 lockerPos = new Vector2(580, 406);
-        Texture2D locker2;
-        Vector2 lockerPos2 = new Vector2(2147, 406);
+        Vector2 lockerPos = new Vector2(1480, 406);
 
         //button
         Texture2D buttonE;
-        Vector2 buttonEPos = new Vector2(580, 270);
+        Vector2 buttonEPos = new Vector2(1480, 270);
 
         //senses
         Texture2D senses;
@@ -55,7 +53,7 @@ namespace Penumbra
 
         //lift
         Texture2D lift;
-        Vector2 lift_Pos = new Vector2(250,276);
+        Vector2 lift_Pos = new Vector2(280,276);
 
         Texture2D lift2;
         Vector2 lift_Pos2 = new Vector2(2840, 276);
@@ -81,15 +79,14 @@ namespace Penumbra
         Game1 game;
         public floor2Screen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
-            floor2_bg = game.Content.Load<Texture2D>("background_1");
-            floor2_bg2 = game.Content.Load<Texture2D>("background_2");
+            floor2_bg = game.Content.Load<Texture2D>("floor2_bg_1");
+            floor2_bg2 = game.Content.Load<Texture2D>("floor2_bg_2");
 
-            player = game.Content.Load<Texture2D>("player");
+            player = game.Content.Load<Texture2D>("player_walk");
 
             enemy = game.Content.Load<Texture2D>("enemy_1");
 
             locker = game.Content.Load<Texture2D>("locker");
-            locker2 = game.Content.Load<Texture2D>("locker");
 
             buttonE = game.Content.Load<Texture2D>("button");
 
@@ -152,10 +149,9 @@ namespace Penumbra
 
             }
 
-
-
+            UpdateFrame2((float)gameTime.ElapsedGameTime.TotalSeconds);
             enemyPos.X = enemyPos.X + (3 * direction2);
-            if (enemyPos.X < 150 || enemyPos.X + (enemyPos.X) > 3200)
+            if (enemyPos.X < 580 || enemyPos.X + (enemyPos.X) > 4800)
             {
                 direction2 *= -1;
             }
@@ -170,10 +166,8 @@ namespace Penumbra
             }
 
             personHit2 = false;
-            personHit3 = false;
+            
             Rectangle lockerRectangle = new Rectangle((int)lockerPos.X, (int)lockerPos.X, 130, 260);
-            Rectangle lockerRectangle2 = new Rectangle((int)lockerPos2.X, (int)lockerPos2.X, 130, 260);
-
             ks = Keyboard.GetState();
             if (personRectangle.Intersects(lockerRectangle) == true)
             {
@@ -197,23 +191,6 @@ namespace Penumbra
             if (walk == false)
             {
                 personHit = false;
-            }
-
-            if (personRectangle.Intersects(lockerRectangle2) == true)
-            {
-                personHit3 = true;
-                if (ks.IsKeyDown(Keys.E) && oldks.IsKeyUp(Keys.E))
-                {
-                    hide = true;
-                    walk = false;
-
-                }
-                else if (ks.IsKeyDown(Keys.Q) && oldks.IsKeyDown(Keys.Q))
-                {
-                    hide = false;
-                    walk = true;
-                }
-                oldks = ks;
             }
 
             if (personHit2 == true)
@@ -268,19 +245,8 @@ namespace Penumbra
             spriteBatch.Draw(lift, lift_Pos - cameraPos, Color.White);
             spriteBatch.Draw(lift2, lift_Pos2 - cameraPos, Color.White);
 
-            if (personHit3 == true)
-            {
-
-                spriteBatch.Draw(buttonE, new Vector2(2147, 270) - cameraPos, Color.White);
-
-            }
-            else if (personHit3 == false)
-            {
-
-            }
 
             spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
-            spriteBatch.Draw(locker, new Vector2(2147, 406) - cameraPos, Color.White);
 
             spriteBatch.Draw(senses, sensesPos, Color.White);
 
