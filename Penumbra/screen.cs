@@ -7,9 +7,10 @@ using System.Text;
 
 namespace Penumbra
 {
-    public class screen
+    public class screen : Game1
     {
 
+        public Vector2 playerPos(250, 406);
         protected EventHandler ScreenEvent;
         public screen(EventHandler theScreenEvent)
         {

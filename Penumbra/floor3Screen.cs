@@ -49,6 +49,8 @@ namespace Penumbra
         //button
         Texture2D buttonE;
         Vector2 buttonEPos = new Vector2(580, 270);
+        Texture2D buttonQ;
+        Vector2 buttonQPos = new Vector2(580, 270);
 
         //senses
         Texture2D senses;
@@ -114,16 +116,17 @@ namespace Penumbra
             locker2 = game.Content.Load<Texture2D>("locker");
 
             buttonE = game.Content.Load<Texture2D>("button");
+            buttonQ = game.Content.Load<Texture2D>("Q");
 
-            senses = game.Content.Load<Texture2D>("senses");
+            //senses = game.Content.Load<Texture2D>("senses");
 
-            inventory = game.Content.Load<Texture2D>("inventory");
+            //inventory = game.Content.Load<Texture2D>("inventory");
 
             lift = game.Content.Load<Texture2D>("lift");
 
             Door = game.Content.Load<Texture2D>("Door");
 
-            barTexture = game.Content.Load<Texture2D>("HealthBar_thumb");
+            barTexture = game.Content.Load<Texture2D>("UI_HP");
             currentHeart = barTexture.Width - 5;
 
             frame = 0;
@@ -170,8 +173,15 @@ namespace Penumbra
                     direction = 0;
                     playerPos += new Vector2(4, 0);
                 }
+                else if (Keyboard.GetState().IsKeyUp(Keys.D) && oldks.IsKeyDown(Keys.D) && playerPos.X < game.GraphicsDevice.Viewport.Width * 2 - 130)
+                {
 
-                else if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
+                    frame = 0;
+                    totalElapsed = 0;
+                }
+
+
+                if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
                 {
                     if (playerPos.X - cameraPos.X <= 300 && cameraPos.X > 0)
                     {
@@ -183,6 +193,15 @@ namespace Penumbra
                     playerPos -= new Vector2(4, 0);
 
                 }
+
+                if (Keyboard.GetState().IsKeyUp(Keys.A) && oldks.IsKeyDown(Keys.A) && playerPos.X > 0)
+                {
+                    frame = 7;
+                    totalElapsed = 0;
+
+                }
+                oldks = ks;
+
             }
             else if (walk == false)
             {
@@ -311,13 +330,28 @@ namespace Penumbra
 
             if (personHit2 == true)
             {
-                spriteBatch.Draw(buttonE, buttonEPos - cameraPos, Color.White);
+                if (hide == false) 
+                {
+                    spriteBatch.Draw(buttonE, buttonEPos - cameraPos, Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(buttonQ, buttonQPos - cameraPos, Color.White);
+                }
             }
+            
 
             if (personHit3 == true)
             {
-
-                spriteBatch.Draw(buttonE, new Vector2(2147, 270) - cameraPos, Color.White);
+                if (hide == false)
+                {
+                    spriteBatch.Draw(buttonE, new Vector2(2147, 270) - cameraPos, Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(buttonQ, new Vector2(2147, 270) - cameraPos, Color.White);
+                }
+                
 
             }
 
@@ -331,11 +365,11 @@ namespace Penumbra
             spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
             spriteBatch.Draw(locker, new Vector2(2147, 418) - cameraPos, Color.White);
 
-            spriteBatch.Draw(senses, sensesPos, Color.White);
+            //spriteBatch.Draw(senses, sensesPos, Color.White);
 
-            spriteBatch.Draw(inventory, inventoyPos, Color.White);
-            spriteBatch.Draw(inventory, new Vector2(135, 670), Color.White);
-            spriteBatch.Draw(inventory, new Vector2(265, 670), Color.White);
+            //spriteBatch.Draw(inventory, inventoyPos, Color.White);
+           // spriteBatch.Draw(inventory, new Vector2(135, 670), Color.White);
+            //spriteBatch.Draw(inventory, new Vector2(265, 670), Color.White);
 
             spriteBatch.Draw(Door, DoorPos - cameraPos, Color.White);
 
@@ -386,6 +420,7 @@ namespace Penumbra
             //0.0f is silent, 1.0f is full volume
             MediaPlayer.Volume -= 0.1f;
             //MediaPlayer.Play(song);
+            
         }
     }
 }

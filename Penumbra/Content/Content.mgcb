@@ -259,6 +259,13 @@
 /processorParam:TextureFormat=Color
 /build:locker.png
 
+#begin Over.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Over.spritefont
+
 #begin player_walk.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -270,6 +277,25 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:player_walk.png
+
+#begin Q.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Q.png
+
+#begin Rule.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Rule.spritefont
 
 #begin senses.png
 /importer:TextureImporter
@@ -283,6 +309,13 @@
 /processorParam:TextureFormat=Color
 /build:senses.png
 
+#begin spacebar.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:spacebar.spritefont
+
 #begin start.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -294,4 +327,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:start.png
+
+#begin UI_HP.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI_HP.png
 

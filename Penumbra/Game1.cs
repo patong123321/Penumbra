@@ -81,11 +81,11 @@ namespace Penumbra
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mfloor3Screen = new floor3Screen(this, new EventHandler(GameplayScreenEvent));
-            mfloor2Screen = new floor2Screen(this, new EventHandler(GameplayScreenEvent));
-            mfloor1Screen = new floor1Screen(this, new EventHandler(GameplayScreenEvent));
-            mbedroomScreen = new bedroomScreen(this, new EventHandler(GameplayScreenEvent));
-            mMenuScreen = new MenuScreen(this, new EventHandler(GameplayScreenEvent));
-            mGameOverScreen = new GameOverScreen(this, new EventHandler(GameplayScreenEvent));
+            mfloor2Screen = new floor2Screen(this, new EventHandler(Gameplay2ScreenEvent));
+            mfloor1Screen = new floor1Screen(this, new EventHandler(Gameplay3ScreenEvent));
+            mbedroomScreen = new bedroomScreen(this, new EventHandler(BedScreenEvent));
+            mMenuScreen = new MenuScreen(this, new EventHandler(MenuScreenEvent));
+            mGameOverScreen = new GameOverScreen(this, new EventHandler(OverScreenEvent));
             mCurrentScreen = mMenuScreen;
         }
 
@@ -174,6 +174,27 @@ namespace Penumbra
             base.Draw(gameTime);
         }
         public void GameplayScreenEvent(object obj, EventArgs e)
+        {
+            mCurrentScreen = (screen)obj;
+        }
+        public void Gameplay2ScreenEvent(object obj, EventArgs e)
+        {
+            mCurrentScreen = (screen)obj;
+           
+        }
+        public void Gameplay3ScreenEvent(object obj, EventArgs e)
+        {
+            mCurrentScreen = (screen)obj;
+        }
+        public void MenuScreenEvent(object obj, EventArgs e)
+        {
+            mCurrentScreen = (screen)obj;
+        }
+        public void BedScreenEvent(object obj, EventArgs e)
+        {
+            mCurrentScreen = (screen)obj;
+        }
+        public void OverScreenEvent(object obj, EventArgs e)
         {
             mCurrentScreen = (screen)obj;
         }

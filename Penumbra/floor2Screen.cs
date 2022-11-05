@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
+
 namespace Penumbra
 {
     public class floor2Screen : screen
@@ -68,6 +69,9 @@ namespace Penumbra
         Vector2 scroll_factor = new Vector2(1.0f, 1);
         Vector2 cameraPos = new Vector2(1600,0);
 
+        Texture2D barTexture;
+        int currentHeart;
+
         bool personHit = false;
         bool personHit2 = false;
         bool personHit3 = false;
@@ -81,7 +85,7 @@ namespace Penumbra
         KeyboardState ks;
         KeyboardState oldks;
 
-
+        
         Game1 game;
         public floor2Screen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
@@ -105,6 +109,9 @@ namespace Penumbra
 
             lift = game.Content.Load<Texture2D>("lift");
             lift2 = game.Content.Load<Texture2D>("lift");
+
+            barTexture = game.Content.Load<Texture2D>("UI_HP");
+            currentHeart = barTexture.Width - 5;
 
             frame = 0;
             totalFrame = 8;
@@ -131,18 +138,26 @@ namespace Penumbra
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.D) && playerPos.X < game.GraphicsDevice.Viewport.Width * 2 - 130)
                 {
-                    if (playerPos.X - cameraPos.X >= 1200 && cameraPos.X < game.GraphicsDevice.Viewport.Width)
+                    if (playerPos.X - cameraPos.X >= 400 && cameraPos.X < game.GraphicsDevice.Viewport.Width)
                     {
                         cameraPos += new Vector2(4, 0);
                     }
                     UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
+
                     direction = 0;
                     playerPos += new Vector2(4, 0);
                 }
-
-                else if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
+                if (Keyboard.GetState().IsKeyUp(Keys.D) && oldks.IsKeyDown(Keys.D) && playerPos.X < game.GraphicsDevice.Viewport.Width * 2 - 130)
                 {
-                    if (playerPos.X - cameraPos.X <= 1000 && cameraPos.X > 0)
+
+                    frame = 0;
+                    totalElapsed = 0;
+                }
+
+
+                if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
+                {
+                    if (playerPos.X - cameraPos.X <= 300 && cameraPos.X > 0)
                     {
                         cameraPos -= new Vector2(4, 0);
                     }
@@ -152,6 +167,15 @@ namespace Penumbra
                     playerPos -= new Vector2(4, 0);
 
                 }
+
+                if (Keyboard.GetState().IsKeyUp(Keys.A) && oldks.IsKeyDown(Keys.A) && playerPos.X > 0)
+                {
+                    frame = 7;
+                    totalElapsed = 0;
+
+                }
+                oldks = ks;
+
             }
             else if (walk == false)
             {
@@ -171,9 +195,8 @@ namespace Penumbra
             {
                 direction2 *= 1;
             }
-
-            Rectangle personRectangle = new Rectangle((int)playerPos.X, (int)playerPos.X, 130, 260);
             personHit = false;
+            Rectangle personRectangle = new Rectangle((int)playerPos.X, (int)playerPos.X, 130, 260);
 
             Rectangle enemyRectangle = new Rectangle((int)enemyPos.X, (int)enemyPos.X, 155, 300);
             if (personRectangle.Intersects(enemyRectangle) == true)
@@ -190,6 +213,7 @@ namespace Penumbra
             personHit2 = false;
             
             Rectangle lockerRectangle = new Rectangle((int)lockerPos.X, (int)lockerPos.X, 130, 260);
+            Rectangle lockerRectangle2 = new Rectangle((int)lockerPos2.X, (int)lockerPos2.X, 130, 260);
             ks = Keyboard.GetState();
             if (personRectangle.Intersects(lockerRectangle) == true)
             {
@@ -198,18 +222,20 @@ namespace Penumbra
                 {
                     hide = true;
                     walk = false;
-
                 }
-                else if (ks.IsKeyDown(Keys.Q) && oldks.IsKeyUp(Keys.Q))
+                else if (ks.IsKeyDown(Keys.Q) && oldks.IsKeyDown(Keys.Q))
                 {
                     hide = false;
                     walk = true;
-
                 }
                 oldks = ks;
 
             }
-            Rectangle lockerRectangle2 = new Rectangle((int)lockerPos2.X, (int)lockerPos2.X, 130, 260);
+            if (walk == false)
+            {
+                personHit = false;
+            }
+
             if (personRectangle.Intersects(lockerRectangle2) == true)
             {
                 personHit3 = true;
@@ -227,15 +253,18 @@ namespace Penumbra
                 oldks = ks;
             }
 
-
-            if (walk == false)
+            if (personHit == true)
             {
-                personHit = false;
+
+                if (currentHeart > 0)
+                {
+                    currentHeart = currentHeart - 5 % barTexture.Width;
+                }
             }
-
-            if (personHit2 == true)
+            if (currentHeart <= 0)
             {
-
+                ScreenEvent.Invoke(game.mGameOverScreen, new EventArgs());
+                return;
             }
 
             liftHit = false;
@@ -274,14 +303,16 @@ namespace Penumbra
             {
 
                 spriteBatch.Draw(buttonE, buttonEPos - cameraPos, Color.White);
-
             }
-
 
             if (personHit3 == true)
             {
 
                 spriteBatch.Draw(buttonE, new Vector2(2147, 270) - cameraPos, Color.White);
+
+            }
+            else
+            {
 
             }
 
@@ -298,11 +329,11 @@ namespace Penumbra
             spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
             spriteBatch.Draw(locker, new Vector2(2147, 418) - cameraPos, Color.White);
 
-            spriteBatch.Draw(senses, sensesPos, Color.White);
+            //spriteBatch.Draw(senses, sensesPos, Color.White);
 
-            spriteBatch.Draw(inventory, inventoyPos, Color.White);
-            spriteBatch.Draw(inventory, new Vector2(135, 670), Color.White);
-            spriteBatch.Draw(inventory, new Vector2(265, 670), Color.White);
+            //spriteBatch.Draw(inventory, inventoyPos, Color.White);
+            //spriteBatch.Draw(inventory, new Vector2(135, 670), Color.White);
+            //spriteBatch.Draw(inventory, new Vector2(265, 670), Color.White);
 
             if (direction2 == -1)
             {
@@ -330,6 +361,9 @@ namespace Penumbra
             {
                 spriteBatch.Draw(player, playerPos - cameraPos, new Rectangle(130 * frame, 260 * direction, 130, 260), Color.White);
             }
+            spriteBatch.Draw(barTexture, new Rectangle(game.GraphicsDevice.Viewport.Width / 2 - barTexture.Width / 2, 30, barTexture.Width, 44), new Rectangle(0, 0, barTexture.Width - 4, 59), Color.White);
+            spriteBatch.Draw(barTexture, new Rectangle(game.GraphicsDevice.Viewport.Width / 2 - barTexture.Width / 2, 30, currentHeart, 42), new Rectangle(0, 58, barTexture.Width - 10, 60), Color.Green);
+
             base.Draw(spriteBatch);
         }
 

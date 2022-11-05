@@ -19,7 +19,7 @@ namespace Penumbra
 
         //player
         Texture2D player;
-        Vector2 playerPos = new Vector2(250, 406);
+        public Vector2 playerPos = new Vector2(250, 406);
         int direction = 0;
         int frame;
         int totalFrame;
@@ -37,6 +37,9 @@ namespace Penumbra
         KeyboardState oldks;
 
         bool doorHit = false;
+        bool walk = true;
+
+        SpriteFont font;
 
 
         Game1 game;
@@ -54,6 +57,8 @@ namespace Penumbra
             timePerFrame = (float)1 / framePersec;
             totalElapsed = 0;
 
+            font = game.Content.Load<SpriteFont>("Rule");
+
             this.game = game;
         }
         public override void Update(GameTime gameTime)
@@ -64,24 +69,42 @@ namespace Penumbra
                 ScreenEvent.Invoke(game.mMenuScreen, new EventArgs());
                 return;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.D) && playerPos.X < 1195)
-            {
-                UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-                direction = 0;
-                playerPos += new Vector2(5, 0);
+            KeyboardState keyboard = Keyboard.GetState();
+            if (walk == true)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.D) && playerPos.X < 1195)
+                {
+                    UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+                    direction = 0;
+                    playerPos += new Vector2(4, 0);
+                }
+                else if (Keyboard.GetState().IsKeyUp(Keys.D) && oldks.IsKeyDown(Keys.D) && playerPos.X < 1195)
+                {
+                    frame = 0;
+                    totalElapsed = 0;
+                }
+                
+                if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
+                {
+                    UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
+                    direction = 1;
+                    playerPos -= new Vector2(4, 0);
+                }
+                else if (Keyboard.GetState().IsKeyUp(Keys.A) && oldks.IsKeyDown(Keys.A) && playerPos.X > 0)
+                {
+                    frame = 7;
+                    totalElapsed = 0;
+                }
+                oldks = ks;
 
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 250)
+            else if (walk == false)
             {
 
-                UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
-
-                direction = 1;
-                playerPos -= new Vector2(5, 0);
-
             }
-            
+
             doorHit = false;
             Rectangle personRectangle = new Rectangle((int)playerPos.X, (int)playerPos.X, 130, 260);
             Rectangle doorRectangle = new Rectangle((int)door_Pos.X, (int)door_Pos.X, 130, 325);
@@ -104,8 +127,20 @@ namespace Penumbra
         public override void Draw(SpriteBatch spriteBatch)
         {
             game.GraphicsDevice.Clear(Color.Black);
+
+            
             spriteBatch.Draw(bedroom_bg, bedroom_bgPos, Color.White);
             spriteBatch.Draw(door, door_Pos, Color.White);
+            string str;
+            str = "A and D to walk";
+            if (playerPos.X <= 600)
+            {
+                spriteBatch.DrawString(font, str, new Vector2(300, 150), new Color(172, 4, 4));
+            }
+            else
+            {
+
+            }
             
             if (doorHit == true)
             {
