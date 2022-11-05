@@ -288,7 +288,7 @@ namespace Penumbra
             if (currentHeart <= 0)
             {
                 ScreenEvent.Invoke(game.mGameOverScreen, new EventArgs());
-                
+                return;
             }
 
 

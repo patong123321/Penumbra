@@ -161,7 +161,15 @@ namespace Penumbra
                 spriteBatch.End();
                 penumbra.Draw(gameTime);
             }
-
+            if (mCurrentScreen == mfloor1Screen)
+            {
+                penumbra.BeginDraw();
+                GraphicsDevice.Clear(Color.Red);
+                spriteBatch.Begin();
+                mCurrentScreen.Draw(spriteBatch);
+                spriteBatch.End();
+                penumbra.Draw(gameTime);
+            }
 
             base.Draw(gameTime);
         }
