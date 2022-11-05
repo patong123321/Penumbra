@@ -15,7 +15,7 @@ namespace Penumbra
 
         //door
         Texture2D door;
-        Vector2 door_Pos = new Vector2(1025,340);
+        Vector2 door_Pos = new Vector2(1025,365);
 
         //player
         Texture2D player;

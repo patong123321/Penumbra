@@ -11,10 +11,10 @@ namespace Penumbra
     public class floor1Screen : screen
     {
         //bg
-        Texture2D floor3_bg;
-        Vector2 floor3_bgPos = new Vector2(0, 0);
-        Texture2D floor3_bg2;
-        Vector2 floor3_bgPos2 = new Vector2(0, 0);
+        Texture2D floor1_bg;
+        Vector2 floor1_bgPos = new Vector2(0, 0);
+        Texture2D floor1_bg2;
+        Vector2 floor1_bgPos2 = new Vector2(0, 0);
 
         //player
         Texture2D player;
@@ -57,7 +57,10 @@ namespace Penumbra
 
         //lift
         Texture2D lift;
-        Vector2 lift_Pos = new Vector2(2840, 276);
+        Vector2 lift_Pos = new Vector2(280, 276);
+
+        Texture2D lift2;
+        Vector2 lift_Pos2 = new Vector2(2840, 276);
 
         //camera
         Vector2 scroll_factor = new Vector2(1.0f, 1);
@@ -82,14 +85,14 @@ namespace Penumbra
         Game1 game;
         public floor1Screen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
-            floor3_bg = game.Content.Load<Texture2D>("background_1");
-            floor3_bg2 = game.Content.Load<Texture2D>("background_2");
+            floor1_bg = game.Content.Load<Texture2D>("floor1_bg_1");
+            floor1_bg2 = game.Content.Load<Texture2D>("floor1_bg_2");
 
             player = game.Content.Load<Texture2D>("player_walk");
 
-            enemy = game.Content.Load<Texture2D>("enemy_1");
+            enemy = game.Content.Load<Texture2D>("enemy_1_walk");
 
-            locker = game.Content.Load<Texture2D>("locker");
+            //locker = game.Content.Load<Texture2D>("locker");
             locker2 = game.Content.Load<Texture2D>("locker");
 
             buttonE = game.Content.Load<Texture2D>("button");
@@ -99,6 +102,7 @@ namespace Penumbra
             inventory = game.Content.Load<Texture2D>("inventory");
 
             lift = game.Content.Load<Texture2D>("lift");
+            lift2 = game.Content.Load<Texture2D>("Exit");
 
             frame = 0;
             totalFrame = 8;
@@ -237,13 +241,13 @@ namespace Penumbra
         {
             if (personHit == true)
             {
-                spriteBatch.Draw(floor3_bg, (floor3_bgPos - cameraPos) * scroll_factor, Color.Red);
-                spriteBatch.Draw(floor3_bg2, (floor3_bgPos2 - cameraPos) * scroll_factor + new Vector2(game.GraphicsDevice.Viewport.Width, 0), Color.Red);
+                spriteBatch.Draw(floor1_bg, (floor1_bgPos - cameraPos) * scroll_factor, Color.Red);
+                spriteBatch.Draw(floor1_bg2, (floor1_bgPos2 - cameraPos) * scroll_factor + new Vector2(game.GraphicsDevice.Viewport.Width, 0), Color.Red);
             }
             else if (personHit == false)
             {
-                spriteBatch.Draw(floor3_bg, (floor3_bgPos - cameraPos) * scroll_factor, Color.White);
-                spriteBatch.Draw(floor3_bg2, (floor3_bgPos2 - cameraPos) * scroll_factor + new Vector2(game.GraphicsDevice.Viewport.Width, 0), Color.White);
+                spriteBatch.Draw(floor1_bg, (floor1_bgPos - cameraPos) * scroll_factor, Color.White);
+                spriteBatch.Draw(floor1_bg2, (floor1_bgPos2 - cameraPos) * scroll_factor + new Vector2(game.GraphicsDevice.Viewport.Width, 0), Color.White);
             }
 
             if (personHit2 == true)
@@ -267,14 +271,17 @@ namespace Penumbra
 
             }
 
-            spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
-            spriteBatch.Draw(locker, new Vector2(2147, 406) - cameraPos, Color.White);
+          //  spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
+            spriteBatch.Draw(locker, new Vector2(2147, 418) - cameraPos, Color.White);
 
             spriteBatch.Draw(senses, sensesPos, Color.White);
 
             spriteBatch.Draw(inventory, inventoyPos, Color.White);
             spriteBatch.Draw(inventory, new Vector2(135, 670), Color.White);
             spriteBatch.Draw(inventory, new Vector2(265, 670), Color.White);
+
+            spriteBatch.Draw(lift, lift_Pos - cameraPos, Color.White);
+            spriteBatch.Draw(lift2, lift_Pos2 - cameraPos, Color.White);
 
             if (direction2 == -1)
             {
@@ -310,7 +317,7 @@ namespace Penumbra
             totalElapsed2 += elapsed2;
             if (totalElapsed2 > timePerFrame2)
             {
-                frame2 = (frame2 + 1) % 5;
+                frame2 = (frame2 + 1) % 10;
                 totalElapsed2 -= timePerFrame2;
             }
         }

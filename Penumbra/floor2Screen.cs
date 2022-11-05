@@ -27,7 +27,11 @@ namespace Penumbra
 
         //enemy
         Texture2D enemy;
-        Vector2 enemyPos = new Vector2(1600, 275);
+        Vector2 enemyPos = new Vector2(1600, 210);
+
+        Texture2D enemy2;
+        Vector2 enemyPos2 = new Vector2(800, 210);
+
         int direction2 = 1;
         int frame2;
         float totalElapsed2;
@@ -37,7 +41,9 @@ namespace Penumbra
 
         //locker
         Texture2D locker;
-        Vector2 lockerPos = new Vector2(1480, 406);
+        Vector2 lockerPos = new Vector2(1480, 418);
+        Texture2D locker2;
+        Vector2 lockerPos2 = new Vector2(2147, 418);
 
         //button
         Texture2D buttonE;
@@ -86,7 +92,10 @@ namespace Penumbra
 
             enemy = game.Content.Load<Texture2D>("enemy_1");
 
+            enemy2 = game.Content.Load<Texture2D>("enemy_1");
+
             locker = game.Content.Load<Texture2D>("locker");
+            locker2 = game.Content.Load<Texture2D>("locker");
 
             buttonE = game.Content.Load<Texture2D>("button");
 
@@ -124,23 +133,23 @@ namespace Penumbra
                 {
                     if (playerPos.X - cameraPos.X >= 1200 && cameraPos.X < game.GraphicsDevice.Viewport.Width)
                     {
-                        cameraPos += new Vector2(5, 0);
+                        cameraPos += new Vector2(4, 0);
                     }
                     UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
                     direction = 0;
-                    playerPos += new Vector2(5, 0);
+                    playerPos += new Vector2(4, 0);
                 }
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
                 {
                     if (playerPos.X - cameraPos.X <= 1000 && cameraPos.X > 0)
                     {
-                        cameraPos -= new Vector2(5, 0);
+                        cameraPos -= new Vector2(4, 0);
                     }
                     UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
 
                     direction = 1;
-                    playerPos -= new Vector2(5, 0);
+                    playerPos -= new Vector2(4, 0);
 
                 }
             }
@@ -151,9 +160,16 @@ namespace Penumbra
 
             UpdateFrame2((float)gameTime.ElapsedGameTime.TotalSeconds);
             enemyPos.X = enemyPos.X + (3 * direction2);
-            if (enemyPos.X < 580 || enemyPos.X + (enemyPos.X) > 4800)
+            if (enemyPos.X < 150 || enemyPos.X + (enemyPos.X) > 5000)
             {
                 direction2 *= -1;
+            }
+
+            UpdateFrame2((float)gameTime.ElapsedGameTime.TotalSeconds);
+            enemyPos2.X = enemyPos2.X - (3 * direction2);
+            if (enemyPos2.X < 880 || enemyPos2.X + (enemyPos2.X) > 3800)
+            {
+                direction2 *= 1;
             }
 
             Rectangle personRectangle = new Rectangle((int)playerPos.X, (int)playerPos.X, 130, 260);
@@ -161,6 +177,12 @@ namespace Penumbra
 
             Rectangle enemyRectangle = new Rectangle((int)enemyPos.X, (int)enemyPos.X, 155, 300);
             if (personRectangle.Intersects(enemyRectangle) == true)
+            {
+                personHit = true;
+            }
+
+            Rectangle enemy2Rectangle = new Rectangle((int)enemyPos2.X, (int)enemyPos2.X, 155, 300);
+            if (personRectangle.Intersects(enemy2Rectangle) == true)
             {
                 personHit = true;
             }
@@ -187,6 +209,24 @@ namespace Penumbra
                 oldks = ks;
 
             }
+            Rectangle lockerRectangle2 = new Rectangle((int)lockerPos2.X, (int)lockerPos2.X, 130, 260);
+            if (personRectangle.Intersects(lockerRectangle2) == true)
+            {
+                personHit3 = true;
+                if (ks.IsKeyDown(Keys.E) && oldks.IsKeyUp(Keys.E))
+                {
+                    hide = true;
+                    walk = false;
+
+                }
+                else if (ks.IsKeyDown(Keys.Q) && oldks.IsKeyDown(Keys.Q))
+                {
+                    hide = false;
+                    walk = true;
+                }
+                oldks = ks;
+            }
+
 
             if (walk == false)
             {
@@ -236,6 +276,15 @@ namespace Penumbra
                 spriteBatch.Draw(buttonE, buttonEPos - cameraPos, Color.White);
 
             }
+
+
+            if (personHit3 == true)
+            {
+
+                spriteBatch.Draw(buttonE, new Vector2(2147, 270) - cameraPos, Color.White);
+
+            }
+
             if (liftHit == true)
             {
 
@@ -247,6 +296,7 @@ namespace Penumbra
 
 
             spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
+            spriteBatch.Draw(locker, new Vector2(2147, 418) - cameraPos, Color.White);
 
             spriteBatch.Draw(senses, sensesPos, Color.White);
 
@@ -256,11 +306,20 @@ namespace Penumbra
 
             if (direction2 == -1)
             {
-                spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 0, 260, 390), Color.White);
+                spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 0, 260, 455), Color.White);
             }
             else
             {
-                spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 390, 260, 390), Color.White);
+                spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 455, 260, 455), Color.White);
+            }
+
+            if (direction2 == 1)
+            {
+                spriteBatch.Draw(enemy2, enemyPos2 - cameraPos, new Rectangle(260 * frame2, 0, 260, 455), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(enemy2, enemyPos2 - cameraPos, new Rectangle(260 * frame2, 455, 260, 455), Color.White);
             }
 
             if (hide == true)
@@ -289,9 +348,8 @@ namespace Penumbra
             totalElapsed2 += elapsed2;
             if (totalElapsed2 > timePerFrame2)
             {
-                frame2 = (frame2 + 1) % 5;
+                frame2 = (frame2 + 1) % 10;
                 totalElapsed2 -= timePerFrame2;
-
             }
         }
     }

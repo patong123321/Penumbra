@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Penumbra;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Penumbra
 {
@@ -30,16 +32,21 @@ namespace Penumbra
         PenumbraComponent penumbra;
         Light light = new PointLight
         {
-            Scale = new Vector2(1000f),
-            ShadowType = ShadowType.Solid
+            Scale = new Vector2(1500f),
+            ShadowType = ShadowType.Illuminated
+
         };
+
 
         Hull hull = new Hull(new Vector2(1.0f), new Vector2(-1.0f, 1.0f), new Vector2(-1.0f), new Vector2(-1.0f, 1.0f))
         {
             Position = new Vector2(400f, 240f),
             Scale = new Vector2(50f)
+            
         };
 
+        Song song;
+        bool isPlaySong = false;
 
         public Game1()
         {
@@ -52,8 +59,15 @@ namespace Penumbra
 
             penumbra = new PenumbraComponent(this);
             penumbra.Lights.Add(light);
-            penumbra.Hulls.Add(hull);
 
+            if (mCurrentScreen == mfloor3Screen)
+            {
+                this.song = Content.Load<Song>("floor3sound");
+                MediaPlayer.Play(song);
+                MediaPlayer.IsRepeating = true;
+                MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
+            }
+            
 
         }
 
@@ -81,27 +95,86 @@ namespace Penumbra
                 Exit();
             mCurrentScreen.Update(gameTime);
 
-            light.Position = new Vector2(200, 250);
-            hull.Rotation = MathHelper.WrapAngle(-(float)gameTime.TotalGameTime.TotalSeconds);
+            
+            if (mCurrentScreen == mMenuScreen)
+            {
+                light.Position = new Vector2(800, 400);
+                //light.Color = new Color(96, 96, 96);
+                hull.Rotation = MathHelper.WrapAngle(-(float)gameTime.TotalGameTime.TotalSeconds);
+            }
+            if (mCurrentScreen == mfloor3Screen)
+            {
+                light.Position = new Vector2(800, 400);
+                //light.Color = new Color(204, 0, 0);
+                hull.Rotation = MathHelper.WrapAngle(-(float)gameTime.TotalGameTime.TotalSeconds);
+            }
+            if (mCurrentScreen == mfloor2Screen)
+            {
+                light.Position = new Vector2(800, 400);
+                //light.Color = new Color(204, 0, 0);
+                hull.Rotation = MathHelper.WrapAngle(-(float)gameTime.TotalGameTime.TotalSeconds);
+            }
+            
+           /* if (mCurrentScreen == mfloor1Screen)
+            {
+                light.Position = new Vector2(800, 400);
+                //light.Color = new Color(204, 0, 0);
+                hull.Rotation = MathHelper.WrapAngle(-(float)gameTime.TotalGameTime.TotalSeconds);
 
-
+            }*/
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            penumbra.BeginDraw();
             GraphicsDevice.Clear(Color.Red);
             spriteBatch.Begin();
             mCurrentScreen.Draw(spriteBatch);
             spriteBatch.End();
-            penumbra.Draw(gameTime);
+
+            if (mCurrentScreen == mbedroomScreen)
+            {
+                penumbra.BeginDraw();
+                GraphicsDevice.Clear(Color.Red);
+                spriteBatch.Begin();
+                mCurrentScreen.Draw(spriteBatch);
+                spriteBatch.End();
+                penumbra.Draw(gameTime);
+            }
+
+            if (mCurrentScreen == mfloor3Screen)
+            {
+                penumbra.BeginDraw();
+                GraphicsDevice.Clear(Color.Red);
+                spriteBatch.Begin();
+                mCurrentScreen.Draw(spriteBatch);
+                spriteBatch.End();
+                penumbra.Draw(gameTime);
+            }
+
+            if (mCurrentScreen == mfloor2Screen)
+            {
+                penumbra.BeginDraw();
+                GraphicsDevice.Clear(Color.Red);
+                spriteBatch.Begin();
+                mCurrentScreen.Draw(spriteBatch);
+                spriteBatch.End();
+                penumbra.Draw(gameTime);
+            }
+
 
             base.Draw(gameTime);
         }
         public void GameplayScreenEvent(object obj, EventArgs e)
         {
             mCurrentScreen = (screen)obj;
+        }
+
+        void MediaPlayer_MediaStateChanged(object sender, System.EventArgs e)
+        {
+            //0.0f is silent, 1.0f is full volume
+            MediaPlayer.Volume -= 0.1f;
+            //MediaPlayer.Play(song);
         }
 
     }

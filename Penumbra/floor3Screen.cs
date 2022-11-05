@@ -13,19 +13,6 @@ namespace Penumbra
 {
     public class floor3Screen : screen
     {
-        PenumbraComponent penumbra;
-        Light light = new PointLight
-        {
-            Scale = new Vector2(1000f),
-            ShadowType = ShadowType.Solid
-        };
-
-        Hull hull = new Hull(new Vector2(1.0f), new Vector2(-1.0f, 1.0f), new Vector2(-1.0f), new Vector2(-1.0f, 1.0f))
-        {
-            Position = new Vector2(400f, 240f),
-            Scale = new Vector2(50f)
-        };
-
         //bg
         Texture2D floor3_bg;
         Vector2 floor3_bgPos = new Vector2(0, 0);
@@ -45,7 +32,7 @@ namespace Penumbra
 
         //enemy
         Texture2D enemy;
-        Vector2 enemyPos = new Vector2(1600, 275);
+        Vector2 enemyPos = new Vector2(1600, 212);
         int direction2 = 1;
         int frame2;
         float totalElapsed2;
@@ -55,7 +42,7 @@ namespace Penumbra
 
         //locker
         Texture2D locker;
-        Vector2 lockerPos = new Vector2(580, 406);
+        Vector2 lockerPos = new Vector2(580, 418);
         Texture2D locker2;
         Vector2 lockerPos2 = new Vector2(2147, 406);
 
@@ -77,7 +64,7 @@ namespace Penumbra
 
         //door
         Texture2D Door;
-        Vector2 DoorPos = new Vector2(300,340);
+        Vector2 DoorPos = new Vector2(300, 367);
 
         //camera
         Vector2 scroll_factor = new Vector2(1.0f, 1);
@@ -94,6 +81,9 @@ namespace Penumbra
         Song heart;
         bool isPlayHeart = false;
 
+        Song over;
+        bool isPlayOver = false;
+
         bool personHit = false;
         bool personHit2 = false;
         bool personHit3 = false;
@@ -109,7 +99,6 @@ namespace Penumbra
 
 
         Game1 game;
-        private GameTime gameTime;
 
         public floor3Screen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
@@ -149,11 +138,8 @@ namespace Penumbra
             frame2 = 0;
             totalElapsed2 = 0;
 
-            this.song = game.Content.Load<Song>("floor3sound");
-            //this.song = game.Content.Load<Song>("heartbeat");
-            MediaPlayer.Play(song);
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.MediaStateChanged += MediaPlayer_MediaStateChanged;
+
+            this.song = game.Content.Load<Song>("heartbeat");
 
             this.game = game;
         }
@@ -177,25 +163,24 @@ namespace Penumbra
                 {
                     if (playerPos.X - cameraPos.X >= 400 && cameraPos.X < game.GraphicsDevice.Viewport.Width)
                     {
-                        cameraPos += new Vector2(5, 0);
+                        cameraPos += new Vector2(4, 0);
                     }
                     UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
 
                     direction = 0;
-                    playerPos += new Vector2(5, 0);
-
+                    playerPos += new Vector2(4, 0);
                 }
 
                 else if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
                 {
                     if (playerPos.X - cameraPos.X <= 300 && cameraPos.X > 0)
                     {
-                        cameraPos -= new Vector2(5, 0);
+                        cameraPos -= new Vector2(4, 0);
                     }
                     UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
 
                     direction = 1;
-                    playerPos -= new Vector2(5, 0);
+                    playerPos -= new Vector2(4, 0);
 
                 }
             }
@@ -286,16 +271,24 @@ namespace Penumbra
             //sensebar
             if(personHit == true)
             {
+                //MediaPlayer.Play(heart);
+                //isPlayHeart = true;
                 if (currentHeart > 0)
                 {
                     currentHeart = currentHeart - 5%barTexture.Width;
-
                 }
-                
             }
+            /*if(personHit == false && isPlayHeart)
+            {
+                MediaPlayer.Stop();
+                isPlayHeart = false;
+
+            }
+            */
             if (currentHeart <= 0)
             {
                 ScreenEvent.Invoke(game.mGameOverScreen, new EventArgs());
+                
             }
 
 
@@ -305,7 +298,6 @@ namespace Penumbra
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-
             if (personHit == true)
             {
                 spriteBatch.Draw(floor3_bg, (floor3_bgPos - cameraPos) * scroll_factor, Color.Red);
@@ -319,9 +311,7 @@ namespace Penumbra
 
             if (personHit2 == true)
             {
-
                 spriteBatch.Draw(buttonE, buttonEPos - cameraPos, Color.White);
-
             }
 
             if (personHit3 == true)
@@ -339,7 +329,7 @@ namespace Penumbra
             }
 
             spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
-            spriteBatch.Draw(locker, new Vector2(2147, 406) - cameraPos, Color.White);
+            spriteBatch.Draw(locker, new Vector2(2147, 418) - cameraPos, Color.White);
 
             spriteBatch.Draw(senses, sensesPos, Color.White);
 
@@ -351,11 +341,11 @@ namespace Penumbra
 
             if (direction2 == -1)
             {
-                spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 0, 260, 390), Color.White);
+                spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 0, 260, 455), Color.White);
             }
             else
             {
-                spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 390, 260, 390), Color.White);
+                spriteBatch.Draw(enemy, enemyPos - cameraPos, new Rectangle(260 * frame2, 455, 260, 455), Color.White);
             }
             spriteBatch.Draw(lift, lift_Pos - cameraPos, Color.White);
             if (hide == true)
@@ -387,7 +377,7 @@ namespace Penumbra
             totalElapsed2 += elapsed2;
             if (totalElapsed2 > timePerFrame2)
             {
-                frame2 = (frame2 + 1) % 5;
+                frame2 = (frame2 + 1) % 10;
                 totalElapsed2 -= timePerFrame2;
             }
         }
@@ -395,7 +385,7 @@ namespace Penumbra
         {
             //0.0f is silent, 1.0f is full volume
             MediaPlayer.Volume -= 0.1f;
-            MediaPlayer.Play(song);
+            //MediaPlayer.Play(song);
         }
     }
 }
