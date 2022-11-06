@@ -294,8 +294,9 @@ namespace Penumbra
 
             if (personRectangle.Intersects(liftRectangle) == true)
             {
+                ks = Keyboard.GetState();
                 liftHit = true;
-                if (ks.IsKeyDown(Keys.E) && oldks.IsKeyUp(Keys.E))
+                if (ks.IsKeyUp(Keys.E) && oldks.IsKeyDown(Keys.E))
                 {
                     ScreenEvent.Invoke(game.mEndScreen, new EventArgs());
                     playerPos = new Vector2(250, 406);
