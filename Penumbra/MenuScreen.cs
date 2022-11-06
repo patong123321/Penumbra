@@ -41,7 +41,7 @@ namespace Penumbra
             
             if (Keyboard.GetState().IsKeyDown(Keys.P) == true)
             {
-                ScreenEvent.Invoke(game.mfloor2Screen, new EventArgs());
+                ScreenEvent.Invoke(game.mEndScreen, new EventArgs());
                 return;
             }
             oldks = Keyboard.GetState();

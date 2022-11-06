@@ -194,7 +194,7 @@ namespace Penumbra
 
             UpdateFrame2((float)gameTime.ElapsedGameTime.TotalSeconds);
             enemyPos2.X = enemyPos2.X - (3 * direction2);
-            if (enemyPos2.X < 880 || enemyPos2.X + (enemyPos2.X) > 3800)
+            if (enemyPos2.X < 880 || enemyPos2.X + (enemyPos2.X) > 400)
             {
                 direction2 *= 1;
             }
