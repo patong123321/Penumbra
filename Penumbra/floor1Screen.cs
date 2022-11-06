@@ -80,6 +80,8 @@ namespace Penumbra
 
         bool liftHit = false;
 
+        bool liftHit2 = false;
+
         bool hide;
 
         bool walk = true;
@@ -226,7 +228,8 @@ namespace Penumbra
             Rectangle lockerRectangle2 = new Rectangle((int)lockerPos2.X, (int)lockerPos2.X, 130, 260);
 
             liftHit = false;
-            Rectangle liftRectangle = new Rectangle((int)lift_Pos.X, (int)lift_Pos.X, 390, 390);
+            Rectangle liftRectangle = new Rectangle((int)lift_Pos2.X, (int)lift_Pos2.X, 390, 390);
+
 
             ks = Keyboard.GetState();
             if (personRectangle.Intersects(lockerRectangle) == true)
@@ -276,16 +279,35 @@ namespace Penumbra
 
                 if (currentHeart > 0)
                 {
-                    currentHeart = currentHeart - 5 % barTexture.Width;
+                    currentHeart = currentHeart - 20 % barTexture.Width;
                 }
             }
             if (currentHeart <= 0)
             {
                 ScreenEvent.Invoke(game.mGameOverScreen, new EventArgs());
+                playerPos = new Vector2(250, 406);
+                cameraPos = Vector2.Zero;
+                currentHeart = barTexture.Width - 5;
+                Vector2 enemyPos2 = new Vector2(0, 406);
                 return;
             }
 
-            base.Update(gameTime);
+            if (personRectangle.Intersects(liftRectangle) == true)
+            {
+                liftHit = true;
+                if (ks.IsKeyDown(Keys.E) && oldks.IsKeyUp(Keys.E))
+                {
+                    ScreenEvent.Invoke(game.mEndScreen, new EventArgs());
+                    playerPos = new Vector2(250, 406);
+                    cameraPos = Vector2.Zero;
+                    currentHeart = barTexture.Width - 5;
+                    Vector2 enemyPos2 = new Vector2(0, 406);
+
+                }
+                oldks = ks;
+            }
+
+                base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -331,7 +353,8 @@ namespace Penumbra
 
             }
 
-          //  spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
+
+            //  spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
             spriteBatch.Draw(locker, new Vector2(2147, 418) - cameraPos, Color.White);
 
            // spriteBatch.Draw(senses, sensesPos, Color.White);

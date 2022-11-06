@@ -27,7 +27,7 @@ namespace Penumbra
             if (Keyboard.GetState().IsKeyDown(Keys.Space) == true)
             {
                 ScreenEvent.Invoke(game.mbedroomScreen, new EventArgs());
-                playerPos = new Vector2(250, 406);
+
                 return;
             }
 

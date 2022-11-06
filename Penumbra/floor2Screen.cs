@@ -258,12 +258,17 @@ namespace Penumbra
 
                 if (currentHeart > 0)
                 {
-                    currentHeart = currentHeart - 5 % barTexture.Width;
+                    currentHeart = currentHeart - 10 % barTexture.Width;
                 }
             }
             if (currentHeart <= 0)
             {
                 ScreenEvent.Invoke(game.mGameOverScreen, new EventArgs());
+                playerPos = new Vector2(250, 406);
+                cameraPos = Vector2.Zero;
+                currentHeart = barTexture.Width - 5;
+                enemyPos = new Vector2(1600, 210);
+                enemyPos2 = new Vector2(800, 210);
                 return;
             }
 
@@ -279,6 +284,11 @@ namespace Penumbra
                 if (Keyboard.GetState().IsKeyDown(Keys.E) == true)
                 {
                     ScreenEvent.Invoke(game.mfloor1Screen, new EventArgs());
+                    playerPos = new Vector2(2870, 406);
+                    cameraPos = new Vector2(1600, 0);
+                    currentHeart = barTexture.Width - 5;
+                    enemyPos = new Vector2(1600, 210);
+                    enemyPos2 = new Vector2(800, 210);
                     return;
                 }
             }

@@ -283,6 +283,10 @@ namespace Penumbra
                 if (Keyboard.GetState().IsKeyDown(Keys.E) == true)
                 {
                     ScreenEvent.Invoke(game.mfloor2Screen, new EventArgs());
+                    playerPos = new Vector2(250, 406);
+                    cameraPos = Vector2.Zero;
+                    currentHeart = barTexture.Width - 5;
+                    enemyPos = new Vector2(1600, 212);
                     return;
                 }
             }
@@ -307,6 +311,10 @@ namespace Penumbra
             if (currentHeart <= 0)
             {
                 ScreenEvent.Invoke(game.mGameOverScreen, new EventArgs());
+                playerPos = new Vector2(250, 406);
+                cameraPos = Vector2.Zero;
+                currentHeart = barTexture.Width - 5;
+                enemyPos = new Vector2(1600, 212);
                 return;
             }
 

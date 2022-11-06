@@ -27,6 +27,8 @@ namespace Penumbra
 
         public GameOverScreen mGameOverScreen;
 
+        public EndScreen mEndScreen;
+
         public screen mCurrentScreen;
 
         PenumbraComponent penumbra;
@@ -86,6 +88,7 @@ namespace Penumbra
             mbedroomScreen = new bedroomScreen(this, new EventHandler(BedScreenEvent));
             mMenuScreen = new MenuScreen(this, new EventHandler(MenuScreenEvent));
             mGameOverScreen = new GameOverScreen(this, new EventHandler(OverScreenEvent));
+            mEndScreen = new EndScreen(this, new EventHandler(EndScreenEvent));
             mCurrentScreen = mMenuScreen;
         }
 
@@ -135,7 +138,6 @@ namespace Penumbra
             if (mCurrentScreen == mbedroomScreen)
             {
                 penumbra.BeginDraw();
-                GraphicsDevice.Clear(Color.Red);
                 spriteBatch.Begin();
                 mCurrentScreen.Draw(spriteBatch);
                 spriteBatch.End();
@@ -145,7 +147,7 @@ namespace Penumbra
             if (mCurrentScreen == mfloor3Screen)
             {
                 penumbra.BeginDraw();
-                GraphicsDevice.Clear(Color.Red);
+
                 spriteBatch.Begin();
                 mCurrentScreen.Draw(spriteBatch);
                 spriteBatch.End();
@@ -155,7 +157,7 @@ namespace Penumbra
             if (mCurrentScreen == mfloor2Screen)
             {
                 penumbra.BeginDraw();
-                GraphicsDevice.Clear(Color.Red);
+
                 spriteBatch.Begin();
                 mCurrentScreen.Draw(spriteBatch);
                 spriteBatch.End();
@@ -164,7 +166,7 @@ namespace Penumbra
             if (mCurrentScreen == mfloor1Screen)
             {
                 penumbra.BeginDraw();
-                GraphicsDevice.Clear(Color.Red);
+
                 spriteBatch.Begin();
                 mCurrentScreen.Draw(spriteBatch);
                 spriteBatch.End();
@@ -195,6 +197,11 @@ namespace Penumbra
             mCurrentScreen = (screen)obj;
         }
         public void OverScreenEvent(object obj, EventArgs e)
+        {
+            mCurrentScreen = (screen)obj;
+        }
+
+        public void EndScreenEvent(object obj, EventArgs e)
         {
             mCurrentScreen = (screen)obj;
         }

@@ -40,6 +40,9 @@ namespace Penumbra
         bool walk = true;
 
         SpriteFont font;
+        //barsense
+        Texture2D barTexture;
+        int currentHeart;
 
 
         Game1 game;
@@ -58,6 +61,9 @@ namespace Penumbra
             totalElapsed = 0;
 
             font = game.Content.Load<SpriteFont>("Rule");
+
+            barTexture = game.Content.Load<Texture2D>("UI_HP");
+            currentHeart = barTexture.Width - 5;
 
             this.game = game;
         }
@@ -116,9 +122,12 @@ namespace Penumbra
 
             if(doorHit == true)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.E) == true)
+                if (Keyboard.GetState().IsKeyDown(Keys.E) && oldks.IsKeyUp(Keys.E))
                 {
                     ScreenEvent.Invoke(game.mfloor3Screen, new EventArgs());
+                    playerPos = new Vector2(250, 406);
+                    currentHeart = barTexture.Width - 5;
+                    oldks = ks;
                     return;
                 }
             }
