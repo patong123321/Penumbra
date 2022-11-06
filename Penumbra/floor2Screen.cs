@@ -141,7 +141,7 @@ namespace Penumbra
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.D) && playerPos.X < game.GraphicsDevice.Viewport.Width * 2 - 130)
                 {
-                    if (playerPos.X - cameraPos.X >= 400 && cameraPos.X < game.GraphicsDevice.Viewport.Width)
+                    if (playerPos.X - cameraPos.X >= 1200 && cameraPos.X < game.GraphicsDevice.Viewport.Width)
                     {
                         cameraPos += new Vector2(4, 0);
                     }
@@ -160,7 +160,7 @@ namespace Penumbra
 
                 if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
                 {
-                    if (playerPos.X - cameraPos.X <= 300 && cameraPos.X > 0)
+                    if (playerPos.X - cameraPos.X <= 1000 && cameraPos.X > 0)
                     {
                         cameraPos -= new Vector2(4, 0);
                     }
@@ -267,8 +267,8 @@ namespace Penumbra
             if (currentHeart <= 0)
             {
                 ScreenEvent.Invoke(game.mGameOverScreen, new EventArgs());
-                playerPos = new Vector2(250, 406);
-                cameraPos = Vector2.Zero;
+                playerPos = new Vector2(2870, 406);
+                cameraPos = new Vector2(1600, 0);
                 currentHeart = barTexture.Width - 5;
                 enemyPos = new Vector2(1600, 210);
                 enemyPos2 = new Vector2(800, 210);

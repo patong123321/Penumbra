@@ -280,7 +280,8 @@ namespace Penumbra
             }
             if(liftHit == true)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.E) == true)
+                ks = Keyboard.GetState();
+                if (ks.IsKeyUp(Keys.E) && oldks.IsKeyDown(Keys.E))
                 {
                     ScreenEvent.Invoke(game.mfloor2Screen, new EventArgs());
                     playerPos = new Vector2(250, 406);
@@ -289,6 +290,7 @@ namespace Penumbra
                     enemyPos = new Vector2(1600, 212);
                     return;
                 }
+                oldks = ks;
             }
 
             //sensebar
