@@ -29,6 +29,8 @@ namespace Penumbra
 
         public EndScreen mEndScreen;
 
+        public RuleScreen mRuleScreen;
+
         public screen mCurrentScreen;
 
         PenumbraComponent penumbra;
@@ -89,6 +91,7 @@ namespace Penumbra
             mMenuScreen = new MenuScreen(this, new EventHandler(MenuScreenEvent));
             mGameOverScreen = new GameOverScreen(this, new EventHandler(OverScreenEvent));
             mEndScreen = new EndScreen(this, new EventHandler(EndScreenEvent));
+            mRuleScreen = new RuleScreen(this, new EventHandler(RuleScreenEvent));
             mCurrentScreen = mMenuScreen;
         }
 
@@ -202,6 +205,10 @@ namespace Penumbra
         }
 
         public void EndScreenEvent(object obj, EventArgs e)
+        {
+            mCurrentScreen = (screen)obj;
+        }
+        public void RuleScreenEvent(object obj, EventArgs e)
         {
             mCurrentScreen = (screen)obj;
         }

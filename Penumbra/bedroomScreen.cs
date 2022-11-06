@@ -92,13 +92,13 @@ namespace Penumbra
                     totalElapsed = 0;
                 }
                 
-                if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 0)
+                if (Keyboard.GetState().IsKeyDown(Keys.A) && playerPos.X > 250)
                 {
                     UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
                     direction = 1;
                     playerPos -= new Vector2(4, 0);
                 }
-                else if (Keyboard.GetState().IsKeyUp(Keys.A) && oldks.IsKeyDown(Keys.A) && playerPos.X > 0)
+                else if (Keyboard.GetState().IsKeyUp(Keys.A) && oldks.IsKeyDown(Keys.A) && playerPos.X > 250)
                 {
                     frame = 7;
                     totalElapsed = 0;
@@ -140,16 +140,16 @@ namespace Penumbra
             
             spriteBatch.Draw(bedroom_bg, bedroom_bgPos, Color.White);
             spriteBatch.Draw(door, door_Pos, Color.White);
-            string str;
-            str = "A and D to walk";
-            if (playerPos.X <= 600)
+            //string str;
+            //str = "A and D to walk";
+            /*if (playerPos.X <= 600)
             {
                 spriteBatch.DrawString(font, str, new Vector2(300, 150), new Color(172, 4, 4));
             }
             else
             {
 
-            }
+            }*/
             
             if (doorHit == true)
             {

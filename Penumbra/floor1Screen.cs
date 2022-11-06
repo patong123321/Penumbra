@@ -288,7 +288,7 @@ namespace Penumbra
                 playerPos = new Vector2(250, 406);
                 cameraPos = Vector2.Zero;
                 currentHeart = barTexture.Width - 5;
-                Vector2 enemyPos2 = new Vector2(0, 406);
+                enemyPos2 = new Vector2(0, 406);
                 return;
             }
 
@@ -301,7 +301,7 @@ namespace Penumbra
                     playerPos = new Vector2(250, 406);
                     cameraPos = Vector2.Zero;
                     currentHeart = barTexture.Width - 5;
-                    Vector2 enemyPos2 = new Vector2(0, 406);
+                    enemyPos2 = new Vector2(0, 406);
 
                 }
                 oldks = ks;

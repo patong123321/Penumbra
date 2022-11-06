@@ -297,6 +297,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Rule.spritefont
 
+#begin Rule2.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Rule2.spritefont
+
 #begin senses.png
 /importer:TextureImporter
 /processor:TextureProcessor

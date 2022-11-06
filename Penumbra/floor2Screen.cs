@@ -49,6 +49,8 @@ namespace Penumbra
         //button
         Texture2D buttonE;
         Vector2 buttonEPos = new Vector2(1480, 270);
+        Texture2D buttonQ;
+        Vector2 buttonQPos = new Vector2(1480, 270);
 
         //senses
         Texture2D senses;
@@ -102,6 +104,7 @@ namespace Penumbra
             locker2 = game.Content.Load<Texture2D>("locker");
 
             buttonE = game.Content.Load<Texture2D>("button");
+            buttonQ = game.Content.Load<Texture2D>("Q");
 
             senses = game.Content.Load<Texture2D>("senses");
 
@@ -209,9 +212,13 @@ namespace Penumbra
             {
                 personHit = true;
             }
+            if (walk == false)
+            {
+                personHit = false;
+            }
 
             personHit2 = false;
-            
+            personHit3 = false;
             Rectangle lockerRectangle = new Rectangle((int)lockerPos.X, (int)lockerPos.X, 130, 260);
             Rectangle lockerRectangle2 = new Rectangle((int)lockerPos2.X, (int)lockerPos2.X, 130, 260);
             ks = Keyboard.GetState();
@@ -231,11 +238,7 @@ namespace Penumbra
                 oldks = ks;
 
             }
-            if (walk == false)
-            {
-                personHit = false;
-            }
-
+            //lockerHit2
             if (personRectangle.Intersects(lockerRectangle2) == true)
             {
                 personHit3 = true;
@@ -311,25 +314,34 @@ namespace Penumbra
 
             if (personHit2 == true)
             {
-
-                spriteBatch.Draw(buttonE, buttonEPos - cameraPos, Color.White);
+                if (hide == false)
+                {
+                    spriteBatch.Draw(buttonE, buttonEPos - cameraPos, Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(buttonQ, buttonQPos - cameraPos, Color.White);
+                }
             }
 
             if (personHit3 == true)
             {
+                if (hide == false)
+                {
+                    spriteBatch.Draw(buttonE, new Vector2(2147, 270) - cameraPos, Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(buttonQ, new Vector2(2147, 270) - cameraPos, Color.White);
+                }
 
-                spriteBatch.Draw(buttonE, new Vector2(2147, 270) - cameraPos, Color.White);
-
-            }
-            else
-            {
 
             }
 
             if (liftHit == true)
             {
 
-                spriteBatch.Draw(buttonE, buttonEPos = new Vector2(400, 150) - cameraPos, Color.White);
+                spriteBatch.Draw(buttonE, new Vector2(400, 150) - cameraPos, Color.White);
 
             }
             spriteBatch.Draw(lift, lift_Pos - cameraPos, Color.White);
@@ -337,7 +349,7 @@ namespace Penumbra
 
 
             spriteBatch.Draw(locker, lockerPos - cameraPos, Color.White);
-            spriteBatch.Draw(locker, new Vector2(2147, 418) - cameraPos, Color.White);
+            spriteBatch.Draw(locker, lockerPos2 - cameraPos, Color.White);
 
             //spriteBatch.Draw(senses, sensesPos, Color.White);
 
